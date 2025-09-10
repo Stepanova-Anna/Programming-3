@@ -42,9 +42,14 @@ sys.path.append("http://localhost:8000")
   
 - [Файл `activation_script.py`](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR1-5sem/rootserver/activation_script.py)
 
-Локальный импорт:
-![Лабораторная работа 1. Задание 1](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR1-5sem/6.png)
+**Локальный импорт:**
+
 ![Лабораторная работа 1. Задание 1](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR1-5sem/7.png)
 
+![Лабораторная работа 1. Задание 1](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR1-5sem/6.png)
+
+**Удаленный импорт на Repl.it:**
 
 ### [Repl.it](https://replit.com/@stepanna/LR1-prog-5)
+
+
