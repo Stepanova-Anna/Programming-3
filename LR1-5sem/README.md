@@ -36,6 +36,6 @@ sys.path.append("http://localhost:8000")
 
 ## Решение:
 
-Проделали все шаги по инструкции. [Файл myremotemodule.py](https://replit.com/@stepanna/LR1-prog-5#myremotemodule.py)
+Проделали все шаги по инструкции. [Файл myremotemodule.py](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR1-5sem/rootserver/myremotemodule.py)
 
 ### [Repl.it](https://replit.com/@stepanna/LR1-prog-5)
