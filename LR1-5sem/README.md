@@ -36,6 +36,14 @@ sys.path.append("http://localhost:8000")
 
 ## Решение:
 
-Проделали все шаги по инструкции. [Файл myremotemodule.py](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR1-5sem/rootserver/myremotemodule.py)
+Проделали все шаги по инструкции
+
+- [Файл `myremotemodule.py`](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR1-5sem/rootserver/myremotemodule.py)
+  
+- [Файл `activation_script.py`](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR1-5sem/rootserver/activation_script.py)
+
+Локальный импорт:
+
+
 
 ### [Repl.it](https://replit.com/@stepanna/LR1-prog-5)
