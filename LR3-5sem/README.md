@@ -24,3 +24,5 @@
 Пакет был создан на основе одной из прошлых лабораторных работ. В ходе развёртывания пакета на PyPI возникли сложности. Мой API-токен долго не хотели воспринимать, но после смены команды все прошло успешно 
 
 <img width="1459" height="235" alt="image" src="https://github.com/user-attachments/assets/532c887e-61ef-4b6a-82aa-1927a288e44d" />
+
+<img width="1440" height="517" alt="image" src="https://github.com/user-attachments/assets/a3d0b842-994a-4382-baba-9b3955770a3c" />
