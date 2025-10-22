@@ -2,7 +2,7 @@
 
 ### Результат:
 
-[**Архив с проектом**](https://github.com/Stepanova-Anna/Programming-2/tree/main/LR7-4sem/LR7-prog/LR7-prog)
+[**Архив с проектом**](https://github.com/Stepanova-Anna/Programming-2/blob/main/LR6-4sem/lr6.zip))
 
 `doker-compose.yml` (`main.py` с самого начала у меня был назван `new.py`, так как все работало, решила не исправлять это)
 
