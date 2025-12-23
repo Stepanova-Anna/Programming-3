@@ -37,7 +37,26 @@
 
 Паттерн "Наблюдатель"
 - CurrencySubject - управляет наблюдателями и уведомляет их
+  ```
+  class CurrencySubject:
+    def __init__(self) -> None:
+        self._observers: List[Observer] = []
+        self._currency_data: Dict[str, float] = {}
+    
+    def attach(self, observer: Observer) -> None: ...
+    def detach(self, observer: Observer) -> None: ...
+    async def notify(self) -> None: ...
+  ```
 - WebSocketObserver - отправляет данные через WebSocket
+  ```
+  class WebSocketObserver:
+    def __init__(self, websocket) -> None:
+        self.websocket = websocket
+        self.observer_id = str(uuid.uuid4())[:8]
+    
+    async def update(self, currency_data: Dict[str, Any]) -> None:
+        # Отправка данных через WebSocket
+  ```
 - Поддерживается множественное подключение наблюдателей
 
 WebSocket коммуникация
