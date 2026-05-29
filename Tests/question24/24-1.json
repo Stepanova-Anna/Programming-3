@@ -1,0 +1,54 @@
+{
+  "name": "workflow_n8n",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "8c9c0141-32d0-4687-9221-adf2d73e212b",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://habr.com/ru/hubs/webdev/articles/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [224, 0],
+      "id": "e32b8002-a905-47e7-bdd7-fa9e8937d55d",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "from bs4 import BeautifulSoup\n\ndef parse_articles(html):\n    soup = BeautifulSoup(html, 'html.parser')\n    articles = []\n    \n    selectors = [\n        'article h2 a',\n        '.tm-article-snippet h2 a',\n        '.tm-title__link',\n        'a.tm-title__link',\n        '.post__title a',\n        '.article-formatted-body h2 a'\n    ]\n    \n    for selector in selectors:\n        found = soup.select(selector)\n        if found:\n            for item in found[:5]:\n                title = item.get_text(strip=True)\n                if title:\n                    articles.append({'title': title})\n            break\n    \n    if not articles:\n        for tag in soup.find_all(['h1', 'h2', 'h3']):\n            link = tag.find('a')\n            if link:\n                title = link.get_text(strip=True)\n                if title and len(title) > 10:\n                    articles.append({'title': title})\n            if len(articles) >= 5:\n                break\n    \n    if not articles:\n        for link in soup.find_all('a'):\n            text = link.get_text(strip=True)\n            if len(text) > 20 and len(text) < 200:\n                articles.append({'title': text})\n            if len(articles) >= 5:\n                break\n    \n    return articles[:5]\n\ninput_data = _items[0]['json']\nhtml_content = input_data['data']\nresult = parse_articles(html_content)\nreturn [{'json': {'articles': result}}]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 0],
+      "id": "b5df5ce4-c0ea-4bf8-8106-ee74c47912a3",
+      "name": "Code in Python"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [[{"node": "HTTP Request", "type": "main", "index": 0}]]
+    },
+    "HTTP Request": {
+      "main": [[{"node": "Code in Python", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "2d34b519-d9fe-4669-a269-b5a8bbbebe34",
+  "meta": {
+    "instanceId": "b253b618cf91fe954c5becd1a66e9dd2cc1b4ba7ddae60e79b736ee66195e9c6"
+  },
+  "id": "kntTWtF5QyPq9135",
+  "tags": []
+}
