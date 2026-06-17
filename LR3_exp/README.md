@@ -16,6 +16,7 @@
 
 ## Схема Workflow
 
+![img](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR3_exp/str.png)
 
 ---
 
@@ -212,24 +213,13 @@ return {
 
 ---
 
-## Типы промптов
-
-В работе были реализованы следующие типы промптов:
-
-| Тип промпта | Пример |
-|-------------|--------|
-| **Ролевой** | `"Ты — опытный журналист с 10-летним стажем, специализирующийся на AI-тематике."` |
-| **Zero-shot** | `"Сделай структурированный дайджест из следующих статей."` |
-| **One-shot** | `"Вот пример хорошего дайджеста: ... Теперь сделай так же."` |
-| **Few-shot** | `"Вот 3 примера дайджестов: ... Сделай по аналогии."` |
-| **Chain of Thought** | `"ШАГ 1: Прочитай все статьи. ШАГ 2: Определи главные темы. ..."` |
-| **Негативный** | `"НЕ используй смайлики, НЕ пиши 'к сожалению'."` |
-
----
-
 ## Результат работы
 
+![img](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR3_exp/letter.png)
 
+![img](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR3_exp/letter2.png)
+
+![img](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR3_exp/letter3.png)
 
 ---
 
