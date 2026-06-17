@@ -1,6 +1,8 @@
 # Отчет по лабораторной работе №2
 ## Вычисление числа π методом Монте-Карло с использованием параллельных вычислений
 
+[Ссылка на collab](https://colab.research.google.com/drive/1IH7jqjFEcoo5yprs846its0HN9XQkNO5?usp=sharing)
+
 ---
 
 ### Цель работы
