@@ -148,10 +148,9 @@ if not query_parts:
 
 ### Основной файл [app.py](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR2_exp/app/app.py)
 
-### HTML-шаблон (templates/index.html)
-(Шаблон с Bootstrap и адаптивной версткой)
+### HTML-шаблон [templates/index.html](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR2_exp/app/templates/index.html)
 
-### Зависимости (requirements.txt)
+### Зависимости [requirements.txt](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR2_exp/app/requirements.txt)
 ```
 Flask==2.3.3
 aiohttp==3.9.1
