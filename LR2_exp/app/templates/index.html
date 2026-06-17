@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск публикаций в Crossref</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Дополнительные стили для улучшения внешнего вида */
+        .search-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        .result-card {
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            height: 100%;
+        }
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .author-badge {
+            background-color: #e7f3ff;
+            color: #0d6efd;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+        .affiliation-text {
+            color: #6c757d;
+            font-style: italic;
+        }
+        .error-message {
+            border-left: 4px solid #dc3545;
+            background-color: #f8d7da;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .empty-message {
+            border-left: 4px solid #ffc107;
+            background-color: #fff3cd;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        .result-stats {
+            background-color: #f8f9fa;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+        }
+        .search-icon {
+            color: #0d6efd;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- Заголовок -->
+        <header class="text-center mb-4">
+            <h1 class="display-4">
+                <i class="bi bi-search"></i>
+                Поиск публикаций в Crossref
+            </h1>
+            <p class="text-muted">Найдите научные статьи по автору или названию</p>
+        </header>
+
+        <!-- Форма поиска -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card search-card">
+                    <div class="card-body p-4">
+                        <form method="POST" id="searchForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="author" class="form-label">
+                                        <i class="bi bi-person"></i> Автор
+                                    </label>
+                                    <input type="text"
+                                           class="form-control form-control-lg"
+                                           id="author"
+                                           name="author"
+                                           placeholder="Например: Smith J"
+                                           value="{{ search_params.author if search_params else '' }}">
+                                    <div class="form-text">Введите фамилию и инициалы автора</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="title" class="form-label">
+                                        <i class="bi bi-book"></i> Название статьи
+                                    </label>
+                                    <input type="text"
+                                           class="form-control form-control-lg"
+                                           id="title"
+                                           name="title"
+                                           placeholder="Например: Machine Learning"
+                                           value="{{ search_params.title if search_params else '' }}">
+                                    <div class="form-text">Введите ключевые слова из названия</div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg px-5" id="searchBtn">
+                                    <i class="bi bi-search"></i> Найти
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Индикатор загрузки -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Загрузка...</span>
+            </div>
+            <p class="mt-2">Выполняется поиск...</p>
+        </div>
+
+        <!-- Сообщения об ошибках -->
+        {% if error %}
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-10">
+                <div class="error-message">
+                    <h5 class="text-danger">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Ошибка
+                    </h5>
+                    <p class="mb-0">{{ error }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Результаты поиска -->
+        {% if results %}
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-10">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>
+                        <i class="bi bi-list-ul search-icon"></i>
+                        Результаты поиска
+                    </h3>
+                    <span class="result-stats">
+                        <i class="bi bi-file-text"></i>
+                        Найдено: {{ results|length }} публикаций
+                    </span>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    {% for publication in results %}
+                    <div class="col">
+                        <div class="card result-card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="bi bi-journal-text"></i>
+                                    {{ publication.title }}
+                                </h5>
+
+                                <div class="mb-2">
+                                    <span class="badge bg-light text-dark me-1">
+                                        <i class="bi bi-person"></i> Автор:
+                                    </span>
+                                    <span class="author-badge">
+                                        {{ publication.first_author }}
+                                    </span>
+                                    {% if publication.authors|length > 1 %}
+                                    <small class="text-muted">
+                                        (и ещё {{ publication.authors|length - 1 }})
+                                    </small>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mb-2">
+                                    <span class="badge bg-light text-dark me-1">
+                                        <i class="bi bi-journal"></i> Журнал:
+                                    </span>
+                                    <span class="fw-medium">{{ publication.container_title }}</span>
+                                </div>
+
+                                <div class="mb-2">
+                                    <span class="badge bg-light text-dark me-1">
+                                        <i class="bi bi-calendar"></i> Год:
+                                    </span>
+                                    <span class="fw-medium">{{ publication.year }}</span>
+                                </div>
+
+                                <div>
+                                    <span class="badge bg-light text-dark me-1">
+                                        <i class="bi bi-building"></i> Аффилиация:
+                                    </span>
+                                    <span class="affiliation-text">
+                                        {{ publication.affiliation }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% elif search_params and not error %}
+        <!-- Сообщение о пустом результате -->
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-10">
+                <div class="empty-message">
+                    <h5 class="text-warning">
+                        <i class="bi bi-info-circle-fill"></i> Информация
+                    </h5>
+                    <p class="mb-0">По вашему запросу ничего не найдено. Попробуйте изменить параметры поиска.</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Информация о приложении -->
+        <footer class="mt-5 text-center text-muted">
+            <hr>
+            <small>
+                <i class="bi bi-github"></i>
+                Асинхронное веб-приложение на Flask + aiohttp
+                <span class="mx-2">|</span>
+                <i class="bi bi-database"></i>
+                Данные из Crossref API
+            </small>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS и зависимости -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <!-- JavaScript для улучшения пользовательского опыта -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const searchBtn = document.getElementById('searchBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            searchForm.addEventListener('submit', function() {
+                // Показываем индикатор загрузки при отправке формы
+                searchBtn.disabled = true;
+                searchBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Поиск...';
+                loadingSpinner.style.display = 'block';
+            });
+
+            // Валидация формы перед отправкой
+            searchForm.addEventListener('submit', function(e) {
+                const author = document.getElementById('author').value.trim();
+                const title = document.getElementById('title').value.trim();
+
+                if (!author && !title) {
+                    e.preventDefault();
+                    alert('Пожалуйста, заполните хотя бы одно поле поиска');
+                    searchBtn.disabled = false;
+                    searchBtn.innerHTML = '<i class="bi bi-search"></i> Найти';
+                    loadingSpinner.style.display = 'none';
+                }
+            });
+
+            // Автофокус на первом поле (если оно пустое)
+            const authorInput = document.getElementById('author');
+            const titleInput = document.getElementById('title');
+
+            if (!authorInput.value && !titleInput.value) {
+                authorInput.focus();
+            }
+        });
+    </script>
+</body>
+</html>
