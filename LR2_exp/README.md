@@ -22,8 +22,6 @@ app/
 
 ## Реализация асинхронных конструкций
 
-### Основные асинхронные элементы
-
 #### Декоратор `async def`
 ```
 async def perform_search(query_params):
@@ -31,28 +29,28 @@ async def perform_search(query_params):
     async with aiohttp.ClientSession() as session:
         return await CrossrefSearch.search_publications(session, query_params)
 ```
-**Назначение**: Объявление функции, которая может выполнять асинхронные операции.
+**Объявление функции, которая может выполнять асинхронные операции**
 
 #### Оператор `await`
 ```
 async with session.get(CROSSREF_API_URL, params=params) as response:
     data = await response.json()
 ```
-**Назначение**: Ожидание завершения асинхронной операции без блокировки основного потока.
+**Ожидание завершения асинхронной операции без блокировки основного потока**
 
 #### Контекстный менеджер `async with`
 ```
 async with aiohttp.ClientSession() as session:
     # Выполнение запросов с использованием сессии
 ```
-**Назначение**: Автоматическое управление ресурсами в асинхронном контексте.
+**Автоматическое управление ресурсами в асинхронном контексте**
 
 #### `asyncio.timeout()`
 ```
 async with asyncio.timeout(TIMEOUT):
     # Выполнение запроса с ограничением по времени
 ```
-**Назначение**: Установка таймаута для асинхронной операции.
+**Установка таймаута для асинхронной операции**
 
 ### Chain of Thought (Цепочка рассуждений)
 
@@ -84,6 +82,8 @@ if not query_parts:
 ---
 
 ## Тестирование приложения
+
+[!image1](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR2_exp/1.png)
 
 #### Успешный поиск по автору
 - **Входные данные**: Автор = "Einstein A"
