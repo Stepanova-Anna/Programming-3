@@ -146,8 +146,7 @@ if not query_parts:
 
 ## Исходный код
 
-### Основной файл (app.py)
-(Полный код приложения представлен в файле app.py с подробными комментариями)
+### Основной файл [app.py](https://github.com/Stepanova-Anna/Programming-3/blob/main/LR2_exp/app/app.py)
 
 ### HTML-шаблон (templates/index.html)
 (Шаблон с Bootstrap и адаптивной версткой)
